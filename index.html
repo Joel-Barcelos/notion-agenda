@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>anotações & agenda</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #191919;
+      --bg-card-dark: #202020;
+      --bg-hover: #262626;
+      --border-subtle: #2f2f2f;
+      --green-banner: #233528;
+      --green-container: #213226;
+      --green-card: #314637;
+      --green-card-hover: #395140;
+      --green-icon: #529463;
+      --text-primary: #ebebeb;
+      --text-secondary: #9b9b9b;
+      --text-muted: #6e6e6e;
+      --blue-notion: #2383e2;
+      --blue-notion-hover: #1b6ec2;
+
+      --tag-gold-bg: #544421;
+      --tag-gold-text: #e6c670;
+      --tag-purple-bg: #492f4c;
+      --tag-purple-text: #dfa8e6;
+      --tag-gray-bg: #333333;
+      --tag-gray-text: #cccccc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      text-transform: lowercase;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      padding: 24px 32px;
+      max-width: 1360px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+    }
+
+    .page-date {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    @media (max-width: 860px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+      body {
+        padding: 16px;
+      }
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: sticky;
+      top: 20px;
+    }
+
+    .sidebar-box {
+      background: var(--bg-main);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .nav-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-left: 22px;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      font-size: 13px;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn-action {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      background: var(--bg-card-dark);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .btn-action:hover {
+      background: var(--bg-hover);
+      border-color: #3f3f3f;
+    }
+
+    .btn-action svg {
+      color: var(--green-icon);
+      flex-shrink: 0;
+    }
+
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .section-block {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .section-banner {
+      background-color: var(--green-banner);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 6px 14px;
+      border-radius: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .green-gallery-wrapper {
+      background-color: var(--green-container);
+      border-radius: 10px;
+      padding: 16px;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tabs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tab-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .tab-pill:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-primary);
+    }
+
+    .tab-pill.active {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+    }
+
+    .btn-nova {
+      background-color: var(--blue-notion);
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      padding: 6px 13px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.15s;
+    }
+
+    .btn-nova:hover {
+      background-color: var(--blue-notion-hover);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .green-card {
+      background-color: var(--green-card);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      position: relative;
+    }
+
+    .green-card:hover {
+      background-color: var(--green-card-hover);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .card-title-group {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-weight: 600;
+      font-size: 13.5px;
+      color: #ffffff;
+    }
+
+    .card-title-group svg {
+      color: #6bb57e;
+      flex-shrink: 0;
+    }
+
+    .card-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 12px;
+      color: #c8d6cc;
+    }
+
+    .card-excerpt {
+      font-size: 12px;
+      color: #b8c9bd;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-delete {
+      opacity: 0;
+      background: transparent;
+      border: none;
+      color: #a3b8a8;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 2px 5px;
+      border-radius: 4px;
+      transition: opacity 0.15s, background 0.15s;
+    }
+
+    .green-card:hover .card-delete {
+      opacity: 1;
+    }
+
+    .card-delete:hover {
+      background: rgba(0, 0, 0, 0.25);
+      color: #ff8a8a;
+    }
+
+    .card-new-slot {
+      border: 1px dashed rgba(255, 255, 255, 0.18);
+      background: transparent;
+      border-radius: 8px;
+      min-height: 112px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .card-new-slot:hover {
+      border-color: rgba(255, 255, 255, 0.35);
+      color: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table.notion-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    table.notion-table th {
+      text-align: left;
+      font-weight: 400;
+      color: var(--text-secondary);
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border-subtle);
+      white-space: nowrap;
+    }
+
+    table.notion-table th span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    table.notion-table td {
+      padding: 9px 10px;
+      border-bottom: 1px solid #242424;
+      color: var(--text-primary);
+      vertical-align: middle;
+    }
+
+    table.notion-table tr:hover td {
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+
+    .task-done {
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+
+    .checkbox-notion {
+      width: 15px;
+      height: 15px;
+      accent-color: var(--blue-notion);
+      cursor: pointer;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .pill-gold { background: var(--tag-gold-bg); color: var(--tag-gold-text); }
+    .pill-purple { background: var(--tag-purple-bg); color: var(--tag-purple-text); }
+    .pill-gray { background: var(--tag-gray-bg); color: var(--tag-gray-text); }
+
+    .new-row-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      padding: 8px 10px;
+      font-family: inherit;
+      font-size: 13px;
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+
+    .new-row-btn:hover {
+      color: var(--text-secondary);
+    }
+
+    .table-footer-sum {
+      display: flex;
+      justify-content: flex-end;
+      gap: 16px;
+      padding: 10px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .table-footer-sum strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 16px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #202020;
+      border: 1px solid #363636;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 440px;
+      padding: 20px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 18px;
+      cursor: pointer;
+      padding: 2px 6px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .form-control {
+      background: #191919;
+      border: 1px solid #333333;
+      border-radius: 6px;
+      padding: 8px 10px;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 13px;
+      text-transform: none;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--green-icon);
+    }
+
+    .form-control.input-error {
+      border-color: #eb8f8f;
+    }
+
+    textarea.form-control {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .btn-cancel {
+      background: transparent;
+      border: 1px solid #333333;
+      color: var(--text-secondary);
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 12px;
+    }
+
+    .divider-line {
+      border: none;
+      border-top: 1px solid var(--border-subtle);
+      margin: 4px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="page-header">
+    <h1 class="page-title">anotações & agenda</h1>
+    <span class="page-date" id="currentDateLabel"></span>
+  </header>
+
+  <div class="dashboard-grid">
+    <aside class="sidebar">
+      <div class="sidebar-box">
+        <div class="nav-header">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color: var(--green-icon);">
+            <path d="M12 2a4.5 4.5 0 0 0-3.5 7.3A4.5 4.5 0 0 0 2 12a4.5 4.5 0 0 0 7.3 3.5A4.5 4.5 0 0 0 12 22a4.5 4.5 0 0 0 3.5-7.3A4.5 4.5 0 0 0 22 12a4.5 4.5 0 0 0-7.3-3.5A4.5 4.5 0 0 0 12 2z"/>
+          </svg>
+          <span>navegação</span>
+        </div>
+        <ul class="nav-links">
+          <li><a href="#sec-agenda">agenda da semana</a></li>
+          <li><a href="#sec-tarefas">tarefas & prazos</a></li>
+          <li><a href="#sec-anotacoes">caderno de anotações</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-box">
+        <div class="action-buttons">
+          <button type="button" class="btn-action" onclick="openModal('evento')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <span>novo compromisso</span>
+          </button>
+
+          <button type="button" class="btn-action" onclick="openModal('tarefa')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 11 12 14 22 4"></polyline>
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+            </svg>
+            <span>nova tarefa</span>
+          </button>
+
+          <button type="button" class="btn-action" onclick="openModal('nota')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>nova anotação</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+
+      <section class="section-block" id="sec-agenda">
+        <div class="section-banner">agenda da semana</div>
+        <div class="green-gallery-wrapper">
+          <div class="toolbar">
+            <div class="tabs" id="agendaTabs">
+              <button type="button" class="tab-pill active" onclick="filterAgenda('tudo', this)">⊞ tudo</button>
+              <button type="button" class="tab-pill" onclick="filterAgenda('hoje', this)">◷ hoje</button>
+              <button type="button" class="tab-pill" onclick="filterAgenda('importante', this)">★ importantes</button>
+            </div>
+            <button type="button" class="btn-nova" onclick="openModal('evento')">nova ⌄</button>
+          </div>
+          <div class="cards-grid" id="agendaGrid"></div>
+        </div>
+      </section>
+
+      <hr class="divider-line" />
+
+      <section class="section-block" id="sec-tarefas">
+        <div class="section-banner">tarefas & prazos</div>
+        <div class="toolbar" style="margin-bottom: 4px;">
+          <div class="tabs" id="tarefaTabs">
+            <button type="button" class="tab-pill active" onclick="filterTarefas('pendentes', this)">⊞ pendentes</button>
+            <button type="button" class="tab-pill" onclick="filterTarefas('concluidas', this)">✓ concluídas</button>
+            <button type="button" class="tab-pill" onclick="filterTarefas('tudo', this)">≡ tudo</button>
+          </div>
+          <button type="button" class="btn-nova" onclick="openModal('tarefa')">nova ⌄</button>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="notion-table">
+            <thead>
+              <tr>
+                <th><span>≡ nome</span></th>
+                <th><span>▤ categoria</span></th>
+                <th><span>📅 prazo</span></th>
+                <th><span>⚡ prioridade</span></th>
+                <th style="width: 40px;"></th>
+              </tr>
+            </thead>
+            <tbody id="tarefasBody"></tbody>
+          </table>
+          <button type="button" class="new-row-btn" onclick="openModal('tarefa')">+ nova página</button>
+          <div class="table-footer-sum">
+            <span>pendentes <strong id="countPendentes">0</strong></span>
+            <span>concluídas <strong id="countConcluidas">0</strong></span>
+          </div>
+        </div>
+      </section>
+
+      <hr class="divider-line" />
+
+      <section class="section-block" id="sec-anotacoes">
+        <div class="section-banner">caderno de anotações</div>
+        <div class="green-gallery-wrapper">
+          <div class="toolbar">
+            <div class="tabs" id="notasTabs">
+              <button type="button" class="tab-pill active" onclick="filterNotas('tudo', this)">⊞ tudo</button>
+              <button type="button" class="tab-pill" onclick="filterNotas('estudos', this)">estudos</button>
+              <button type="button" class="tab-pill" onclick="filterNotas('trabalho', this)">trabalho</button>
+              <button type="button" class="tab-pill" onclick="filterNotas('pessoal', this)">pessoal</button>
+            </div>
+            <button type="button" class="btn-nova" onclick="openModal('nota')">nova ⌄</button>
+          </div>
+          <div class="cards-grid" id="notasGrid"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Modal sem <form> para funcionar dentro de iframes/Notion -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span id="modalTitle">novo item</span>
+        <button type="button" class="modal-close" onclick="closeModal()">×</button>
+      </div>
+
+      <div id="modalFields">
+        <div class="form-group">
+          <label for="fieldTitle">título</label>
+          <input type="text" id="fieldTitle" class="form-control" placeholder="digite o título..." onkeydown="handleEnterKey(event)" />
+        </div>
+
+        <div class="form-group" id="groupCategory">
+          <label for="fieldCategory">categoria</label>
+          <select id="fieldCategory" class="form-control">
+            <option value="estudos">estudos</option>
+            <option value="trabalho">trabalho</option>
+            <option value="pessoal">pessoal</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="groupDate">
+          <label for="fieldDate" id="labelDate">data / horário</label>
+          <input type="text" id="fieldDate" class="form-control" placeholder="ex: amanhã, 14:00" onkeydown="handleEnterKey(event)" />
+        </div>
+
+        <div class="form-group" id="groupExtra">
+          <label for="fieldExtra" id="labelExtra">detalhes / local</label>
+          <input type="text" id="fieldExtra" class="form-control" placeholder="opcional..." onkeydown="handleEnterKey(event)" />
+        </div>
+
+        <div class="form-group" id="groupContent" style="display:none;">
+          <label for="fieldContent">conteúdo da anotação</label>
+          <textarea id="fieldContent" class="form-control" placeholder="escreva suas anotações aqui..."></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" onclick="closeModal()">cancelar</button>
+          <button type="button" class="btn-nova" id="btnSalvarModal" onclick="saveForm()">salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const defaultData = {
+      agenda: [
+        { id: 1, title: 'reunião de alinhamento', date: 'hoje • 14:30', extra: 'online / meet', tag: 'hoje' },
+        { id: 2, title: 'entrega de relatório', date: 'sexta • 17:00', extra: 'revisar anexos', tag: 'importante' },
+        { id: 3, title: 'planejamento mensal', date: 'segunda • 09:00', extra: 'organizar metas', tag: 'importante' }
+      ],
+      tarefas: [
+        { id: 1, title: 'revisar anotações da aula', category: 'estudos', date: '26/11/2026', priority: 'alta', done: false },
+        { id: 2, title: 'atualizar planilha de controle', category: 'trabalho', date: '27/11/2026', priority: 'média', done: false },
+        { id: 3, title: 'organizar arquivos da semana', category: 'pessoal', date: '28/11/2026', priority: 'baixa', done: true }
+      ],
+      notas: [
+        { id: 1, title: 'ideias de projetos', category: 'trabalho', date: '24/11/2026', content: 'estruturar fluxo de trabalho, automatizar relatórios semanais e manter o painel atualizado.' },
+        { id: 2, title: 'resumo de leitura', category: 'estudos', date: '23/11/2026', content: 'pontos principais do capítulo 3: conceitos fundamentais, metodologia aplicada e estudos de caso.' },
+        { id: 3, title: 'checklist semanal', category: 'pessoal', date: '22/11/2026', content: 'separar documentos, confirmar horários da semana e revisar prioridades.' }
+      ]
+    };
+
+    function loadInitialState() {
+      try {
+        const saved = localStorage.getItem('notionGreenPlannerV1');
+        return saved ? JSON.parse(saved) : defaultData;
+      } catch (err) {
+        return defaultData;
+      }
+    }
+
+    let state = loadInitialState();
+    let currentAgendaFilter = 'tudo';
+    let currentTarefaFilter = 'pendentes';
+    let currentNotaFilter = 'tudo';
+    let activeModalType = 'evento';
+    let activeEditId = null;
+
+    function saveState() {
+      try {
+        localStorage.setItem('notionGreenPlannerV1', JSON.stringify(state));
+      } catch (err) {
+        // Continua funcionando em memória caso o Notion bloqueie storage
+      }
+      renderAll();
+    }
+
+    function getPillClass(cat) {
+      if (cat === 'estudos' || cat === 'alta') return 'pill-purple';
+      if (cat === 'trabalho' || cat === 'média') return 'pill-gold';
+      return 'pill-gray';
+    }
+
+    function renderAgenda() {
+      const grid = document.getElementById('agendaGrid');
+      const filtered = state.agenda.filter(item => {
+        if (currentAgendaFilter === 'tudo') return true;
+        return item.tag === currentAgendaFilter;
+      });
+
+      grid.innerHTML = filtered.map(item => `
+        <div class="green-card" onclick="openModal('evento', ${item.id})">
+          <div class="card-header">
+            <div class="card-title-group">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>${item.title}</span>
+            </div>
+            <button type="button" class="card-delete" onclick="deleteItem(event, 'agenda', ${item.id})" title="excluir">×</button>
+          </div>
+          <div class="card-meta">
+            <span>horário: ${item.date || '-'}</span>
+            <span>local/obs: ${item.extra || '-'}</span>
+          </div>
+        </div>
+      `).join('') + `
+        <div class="card-new-slot" onclick="openModal('evento')">
+          <span>+ nova página</span>
+        </div>
+      `;
+    }
+
+    function renderTarefas() {
+      const tbody = document.getElementById('tarefasBody');
+      const filtered = state.tarefas.filter(t => {
+        if (currentTarefaFilter === 'pendentes') return !t.done;
+        if (currentTarefaFilter === 'concluidas') return t.done;
+        return true;
+      });
+
+      tbody.innerHTML = filtered.map(t => `
+        <tr>
+          <td>
+            <input type="checkbox" class="checkbox-notion" ${t.done ? 'checked' : ''} onchange="toggleTarefa(${t.id})" />
+            <span class="${t.done ? 'task-done' : ''}" style="cursor:pointer;" onclick="openModal('tarefa', ${t.id})">${t.title}</span>
+          </td>
+          <td><span class="pill ${getPillClass(t.category)}">${t.category}</span></td>
+          <td style="color: var(--text-secondary);">${t.date || '-'}</td>
+          <td><span class="pill ${getPillClass(t.priority)}">${t.priority}</span></td>
+          <td>
+            <button type="button" class="card-delete" style="opacity:1;" onclick="deleteItem(event, 'tarefas', ${t.id})">×</button>
+          </td>
+        </tr>
+      `).join('');
+
+      document.getElementById('countPendentes').textContent = state.tarefas.filter(t => !t.done).length;
+      document.getElementById('countConcluidas').textContent = state.tarefas.filter(t => t.done).length;
+    }
+
+    function renderNotas() {
+      const grid = document.getElementById('notasGrid');
+      const filtered = state.notas.filter(n => {
+        if (currentNotaFilter === 'tudo') return true;
+        return n.category === currentNotaFilter;
+      });
+
+      grid.innerHTML = filtered.
